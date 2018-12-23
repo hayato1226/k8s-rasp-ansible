@@ -1,12 +1,12 @@
-Role Name
+k8s-common
 =========
 
-A brief description of the role goes here.
+k8s master と worker 導入に必要な共通の処理をまとめたAnsible playbook.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
@@ -18,15 +18,6 @@ Dependencies
 
 None.
 
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
 License
 -------
 
@@ -35,4 +26,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2018 by Hayato Yasuhisa.
