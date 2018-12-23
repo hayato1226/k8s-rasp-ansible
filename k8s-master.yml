@@ -1,0 +1,10 @@
+---
+# k8s-master.yml
+- hosts: k8s-master
+  vars_files:
+    - vars/{{ stage }}.yml
+  roles:
+    - rasp-docker
+    - k8s-common
+    - k8s-master
+  become: yes

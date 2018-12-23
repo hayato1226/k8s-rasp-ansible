@@ -1,0 +1,14 @@
+---
+# tasks file for k8s-worker
+- name: worker 登録状況の確認
+  shell: ls /etc/kubernetes/kubelet.conf | wc -l
+  ignore_errors: yes
+  changed_when: False
+  register: worker_init_status
+
+- name: クラスタへのノード追加
+  when: worker_init_status.stdout|int == 0 
+  shell: |
+    kubeadm join {{ master_ip }}:6443\
+      --token "{{ k8scluster_token }}" \
+      --discovery-token-ca-cert-hash "{{ k8scluster_cert_hash }}"

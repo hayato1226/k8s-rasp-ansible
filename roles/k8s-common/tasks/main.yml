@@ -1,0 +1,43 @@
+---
+# tasks file for k8s-common
+- name: Swapの有効状態を確認
+  shell: swapon -s | wc -l
+  changed_when: False
+  register: swap_enabled
+
+- name: Swap無効化
+  shell: "{{ item }}"
+  with_items:
+    - dphys-swapfile swapoff
+    - dphys-swapfile uninstall
+    - update-rc.d dphys-swapfile remove
+  when: swap_enabled.stdout|int > 1 
+
+- name: Disable swap
+  shell: "{{ item }}"
+  with_items: 
+    - dphys-swapfile swapoff
+    - dphys-swapfile uninstall
+    - update-rc.d dphys-swapfile remove
+  when: swap_enabled.stdout|int > 1 
+
+- name: apt-keyの追加
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: k8sリポジトリの追加
+  template:
+    src: k8s.list.j2
+    dest: /etc/apt/sources.list.d/k8s.list
+
+- name: k8s基本パッケージのインストール
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - kubelet 
+      - kubeadm 
+      - kubectl

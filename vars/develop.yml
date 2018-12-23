@@ -1,0 +1,6 @@
+---
+# vars file for develop group
+ssh_port : 22
+master_ip: "192.168.13.2"
+k8scluster_token: "ctgfdh.5o1w55oi9w211e1v"
+k8scluster_cert_hash: "sha256:5b53b167d7dad2467d0e70c2516d0aa7ddfd58c7adfa9e86e3ab80efe9a03f25"

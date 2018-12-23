@@ -1,0 +1,10 @@
+---
+# k8s-worker.yml
+- hosts: k8s-worker
+  vars_files:
+    - vars/{{ stage }}.yml
+  roles:
+    - rasp-docker
+    - k8s-common
+    - k8s-worker
+  become: yes

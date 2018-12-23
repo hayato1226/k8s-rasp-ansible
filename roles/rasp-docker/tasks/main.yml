@@ -1,0 +1,49 @@
+---
+# tasks file for rasp-docker
+- name: cgroupsのcpusetとmemoryを有効化
+  template:
+    src: cmdline.txt.j2
+    dest: /boot/cmdline.txt
+  register: changed_cmdline
+
+- name: cmdline.txtを更新した場合再起動
+  shell: "sleep 2 && reboot"
+  async: 1
+  poll: 0
+  when: changed_cmdline.changed
+
+- name: 再起動を待機
+  local_action: wait_for host={{ inventory_hostname }} port={{ ssh_port }} delay=1 state=started
+  when: changed_cmdline.changed
+  become: False
+
+- name: 必要なパッケージのインストール
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+- name: apt-keyの追加
+  apt_key:
+    url: https://download.docker.com/linux/raspbian/gpg
+    state: present
+
+- name: raspbian用dockerリポジトリの追加
+  template:
+    src: docker.list.j2
+    dest: /etc/apt/sources.list.d/docker.list
+
+- name: dockerのインストール
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - docker-ce
