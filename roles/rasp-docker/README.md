@@ -1,7 +1,7 @@
 rasp-docker
 =========
 
-Raspberry pi に docker ce を導入するAnsible playbook.
+Raspberry pi に Docker CE を導入するAnsible playbook.
 
 Requirements
 ------------
